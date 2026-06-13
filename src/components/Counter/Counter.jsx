@@ -1,39 +1,34 @@
 import "./Counter.scss";
 import CountUp from "react-countup";
-import { useInView } from "react-intersection-observer";
+import { useContext } from "react";
+import { CartContext } from "../ShopContext/ShopContext";
 
 const Counter = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.5,
-  });
+  const { stats } = useContext(CartContext);
+  const counterData = [
+    { end: stats.members, label: "Total Member" },
+    { end: stats.equipment, label: "Equipment" },
+    { end: stats.trainers, label: "Total Trainer" },
+    { end: stats.awards, label: "Win Awards" },
+  ];
 
   return (
-    <section ref={ref} className="counter">
-      {inView && (
-        <div className="counter__box">
-          <CountUp end={1200} duration={3} className="counter__number" />
-          <p className="counter__text">Total Member</p>
+    <section className="counter">
+      {counterData.map((item, index) => (
+        <div className="counter__box" key={`${item.label}-${item.end}`}>
+          <CountUp
+            key={`${item.label}-${item.end}`}
+            start={0}
+            end={item.end}
+            duration={1.5}
+            separator="," 
+            enableScrollSpy
+            scrollSpyOnce
+            className="counter__number"
+          />
+          <p className="counter__text">{item.label}</p>
         </div>
-      )}
-      {inView && (
-        <div className="counter__box">
-          <CountUp end={500} duration={4} className="counter__number" />
-          <p className="counter__text">Equipment</p>
-        </div>
-      )}
-      {inView && (
-        <div className="counter__box">
-          <CountUp end={150} duration={4} className="counter__number" />
-          <p className="counter__text">Total Trainer</p>
-        </div>
-      )}
-      {inView && (
-        <div className="counter__box">
-          <CountUp end={30} duration={4} className="counter__number" />
-          <p className="counter__text">Win Awards</p>
-        </div>
-      )}
+      ))}
     </section>
   );
 };

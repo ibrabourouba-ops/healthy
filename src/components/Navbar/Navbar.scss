@@ -52,7 +52,22 @@
     }
   }
 
-  &__cart-link {
+&__signin-btn {
+      padding: 0.5em 1rem;
+      border: 1px solid $white;
+      border-radius: 6px;
+      background-color: transparent;
+      color: $white;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+
+      &:hover {
+        background-color: $main;
+        color: #fff;
+      }
+    }
+
+    &__cart-link {
     &.active {
       color: unset;
     }

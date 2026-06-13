@@ -16,8 +16,20 @@ const getStoredCart = () => {
 	return storedCart ? JSON.parse(storedCart) : getDefaultCart();
 };
 
+const getDefaultStats = () => ({
+	members: 0,
+	equipment: 0,
+	trainers: 0,
+	awards: 0,
+});
+
+const getStoredStats = () => {
+	return getDefaultStats();
+};
+
 const ShopContext = (props) => {
 	const [items, setItems] = useState(getStoredCart());
+	const [stats, setStats] = useState(getStoredStats());
 
 	useEffect(() => {
 		localStorage.setItem("cart", JSON.stringify(items));
@@ -63,6 +75,15 @@ const ShopContext = (props) => {
 		setItems(getDefaultCart());
 	};
 
+	const incrementStats = () => {
+		setStats((prev) => ({
+			members: prev.members + 1,
+			equipment: prev.equipment + 1,
+			trainers: prev.trainers + 1,
+			awards: prev.awards + 1,
+		}));
+	};
+
 	const contextValue = {
 		items,
 		addToCart,
@@ -71,6 +92,8 @@ const ShopContext = (props) => {
 		totalCartItems,
 		singleProductAmount,
 		resetCart,
+		stats,
+		incrementStats,
 	};
 
 	return (

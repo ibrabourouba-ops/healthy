@@ -5,10 +5,12 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineClose } from "react-icons/ai";
 import { FaShoppingCart } from "react-icons/fa";
 import { CartContext } from "../ShopContext/ShopContext";
+import SignInModal from "../SignIn/SignInModal";
 
 const Navbar = () => {
-  const { totalCartItems } = useContext(CartContext);
+  const { totalCartItems, incrementStats } = useContext(CartContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [showSignIn, setShowSignIn] = useState(false);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -72,6 +74,16 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li>
+            <button
+              className="navbar__signin-btn"
+              onClick={() => {
+                setShowSignIn(true);
+                closeNav();
+              }}>
+              Sign In
+            </button>
+          </li>
+          <li>
             <NavLink
               className="navbar__cart-link"
               to="/cart"
@@ -87,6 +99,11 @@ const Navbar = () => {
           {isOpen ? <AiOutlineClose /> : <GiHamburgerMenu />}
         </div>
       </div>
+      <SignInModal
+        open={showSignIn}
+        onClose={() => setShowSignIn(false)}
+        onSignIn={() => incrementStats()}
+      />
     </nav>
   );
 };

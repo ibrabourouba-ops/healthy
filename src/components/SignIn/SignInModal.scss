@@ -1,0 +1,76 @@
+@import "../../global.scss";
+
+.signin-modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.signin-modal {
+  width: min(420px, 90%);
+  background: $white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+.signin-modal__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  border: none;
+  background: transparent;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.signin-modal__title {
+  margin-bottom: 0.5rem;
+  color: $dark;
+}
+
+.signin-modal__text {
+  margin-bottom: 1.8rem;
+  color: rgb(85, 85, 85);
+}
+
+.signin-modal__form {
+  display: grid;
+  gap: 1rem;
+}
+
+.signin-modal__form label {
+  display: grid;
+  gap: 0.5rem;
+  color: $dark;
+  font-weight: 500;
+}
+
+.signin-modal__form input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.signin-modal__btn {
+  border: none;
+  background: $main;
+  color: $white;
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.signin-modal__success {
+  margin-top: 0.75rem;
+  color: $main;
+  font-weight: 600;
+}
