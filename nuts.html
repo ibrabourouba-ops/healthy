@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FruitNut - Nuts Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #D7CCC8 0%, #C1A89A 50%, #A1887F 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Falling Nuts Animation */
+        @keyframes fallDown {
+            0% {
+                top: -100px;
+                opacity: 1;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: translateX(0px) rotate(0deg); }
+            25% { transform: translateX(20px) rotate(5deg); }
+            75% { transform: translateX(-20px) rotate(-5deg); }
+        }
+
+        .nut-fall {
+            position: fixed;
+            font-size: 60px;
+            animation: fallDown 8s linear infinite, sway 3s ease-in-out infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .nut-fall:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .nut-fall:nth-child(2) { left: 20%; animation-delay: 2s; }
+        .nut-fall:nth-child(3) { left: 30%; animation-delay: 4s; }
+        .nut-fall:nth-child(4) { left: 40%; animation-delay: 1s; }
+        .nut-fall:nth-child(5) { left: 50%; animation-delay: 3s; }
+        .nut-fall:nth-child(6) { left: 60%; animation-delay: 5s; }
+        .nut-fall:nth-child(7) { left: 70%; animation-delay: 2.5s; }
+        .nut-fall:nth-child(8) { left: 80%; animation-delay: 4.5s; }
+        .nut-fall:nth-child(9) { left: 90%; animation-delay: 1.5s; }
+
+        /* Navigation */
+        nav {
+            background: linear-gradient(90deg, #8D6E63 0%, #A1887F 100%);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 100;
+        }
+
+        nav .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::before {
+            width: 100%;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        nav .auth-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav .signin-btn {
+            background: white !important;
+            color: #8D6E63 !important;
+            padding: 10px 20px !important;
+            border-radius: 20px !important;
+            font-weight: 700 !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        nav .signin-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-box {
+            background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin: 0 auto;
+            transform: scale(1);
+            animation: bounceIn 0.8s ease-out;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .header-box h1 {
+            font-size: 48px;
+            color: white;
+            margin: 0;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+            font-weight: 800;
+        }
+
+        .header-box p {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 16px;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        /* Products Grid */
+        .products-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #D7CCC8 0%, #C1A89A 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .product-card:hover .product-image::before {
+            animation: shine 0.8s;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .product-benefits {
+            background: #f0f0f0;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 15px;
+            border-left: 4px solid #8D6E63;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .add-to-cart {
+            background: linear-gradient(135deg, #8D6E63 0%, #A1887F 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(141, 110, 99, 0.4);
+        }
+
+        .rating {
+            color: #FF9800;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            position: relative;
+            z-index: 10;
+        }
+
+        footer p {
+            margin: 10px 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 15px;
+            }
+
+            .header-box h1 {
+                font-size: 36px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nut-fall {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Falling Nuts Animation -->
+    <div class="nut-fall">🥜</div>
+    <div class="nut-fall">🌰</div>
+    <div class="nut-fall">🥥</div>
+    <div class="nut-fall">🫘</div>
+    <div class="nut-fall">🥜</div>
+    <div class="nut-fall">🌰</div>
+    <div class="nut-fall">🥥</div>
+    <div class="nut-fall">🫘</div>
+    <div class="nut-fall">🥜</div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">🥜 FruitNut</div>
+        <ul>
+            <li><a href="fruits.html">Fruits</a></li>
+            <li><a href="vegetables.html">Vegetables</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="milk.html">Milk</a></li>
+            <li class="auth-links">
+                <a href="web site1.html" class="signin-btn">Sign In</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-box">
+            <h1>🥜 NUTS & SEEDS 🥜</h1>
+            <p>Premium Quality Nuts & Seeds for Health</p>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <div class="products-container">
+        <div class="products-grid">
+            <!-- Peanut -->
+            <div class="product-card">
+                <div class="product-image">🥜</div>
+                <div class="product-info">
+                    <div class="product-name">Peanut</div>
+                    <div class="product-description">
+                        High-protein legume packed with monounsaturated fats and vitamin E for heart health.
+                    </div>
+                    <div class="product-benefits">
+                        ✓ High in protein<br>
+                        ✓ Heart healthy fats<br>
+                        ✓ Energy booster
+                    </div>
+                    <div class="product-footer">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <span class="rating">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chestnut -->
+            <div class="product-card">
+                <div class="product-image">🌰</div>
+                <div class="product-info">
+                    <div class="product-name">Chestnut</div>
+                    <div class="product-description">
+                        Sweet, buttery nut lower in fat, rich in carbohydrates and vitamin C for immunity.
+                    </div>
+                    <div class="product-benefits">
+                        ✓ Vitamin C rich<br>
+                        ✓ Low in fat<br>
+                        ✓ Immune support
+                    </div>
+                    <div class="product-footer">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <span class="rating">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coconut -->
+            <div class="product-card">
+                <div class="product-image">🥥</div>
+                <div class="product-info">
+                    <div class="product-name">Coconut</div>
+                    <div class="product-description">
+                        Tropical fruit with healthy MCT fats, perfect for cooking, skin care, and energy.
+                    </div>
+                    <div class="product-benefits">
+                        ✓ MCT fats<br>
+                        ✓ Natural energy<br>
+                        ✓ Versatile use
+                    </div>
+                    <div class="product-footer">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <span class="rating">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sesame -->
+            <div class="product-card">
+                <div class="product-image">🫘</div>
+                <div class="product-info">
+                    <div class="product-name">Sesame Seeds</div>
+                    <div class="product-description">
+                        Tiny powerhouse seeds loaded with minerals like calcium, iron, and magnesium.
+                    </div>
+                    <div class="product-benefits">
+                        ✓ Mineral rich<br>
+                        ✓ Bone health<br>
+                        ✓ Antioxidants
+                    </div>
+                    <div class="product-footer">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <span class="rating">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Almond -->
+            <div class="product-card">
+                <div class="product-image">🌰</div>
+                <div class="product-info">
+                    <div class="product-name">Almond</div>
+                    <div class="product-description">
+                        Creamy, nutrient-dense nut rich in vitamin E, magnesium for brain and heart health.
+                    </div>
+                    <div class="product-benefits">
+                        ✓ Brain health<br>
+                        ✓ Vitamin E rich<br>
+                        ✓ Heart protective
+                    </div>
+                    <div class="product-footer">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <span class="rating">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Walnut -->
+            <div class="product-card">
+                <div class="product-image">🥜</div>
+                <div class="product-info">
+                    <div class="product-name">Walnut</div>
+                    <div class="product-description">
+                        Brain-shaped nut loaded with Omega-3 fatty acids for cognitive function and heart.
+                    </div>
+                    <div class="product-benefits">
+                        ✓ Omega-3 rich<br>
+                        ✓ Brain booster<br>
+                        ✓ Anti-inflammatory
+                    </div>
+                    <div class="product-footer">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <span class="rating">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sunflower Seeds -->
+            <div class="product-card">
+                <div class="product-image">🫘</div>
+                <div class="product-info">
+                    <div class="product-name">Sunflower Seeds</div>
+                    <div class="product-description">
+                        Nutrient-dense seeds high in selenium, vitamin E, and healthy polyunsaturated fats.
+                    </div>
+                    <div class="product-benefits">
+                        ✓ Selenium rich<br>
+                        ✓ Antioxidant<br>
+                        ✓ Heart healthy
+                    </div>
+                    <div class="product-footer">
+                        <button class="add-to-cart">Add to Cart</button>
+                        <span class="rating">⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 FruitNut E-Commerce. All Rights Reserved.</p>
+        <p>Bringing Fresh & Healthy Products to Your Doorstep</p>
+    </footer>
+</body>
+</html>
