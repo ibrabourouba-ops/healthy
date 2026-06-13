@@ -55,7 +55,7 @@ a {
 }
 
 a:hover {
-  color: #0077cc;
+  color: #d32f2f;
 }
 
 img {
@@ -76,7 +76,7 @@ select {
 button {
   border: 1px solid transparent;
   border-radius: 4px;
-  background-color: #0077cc;
+  background-color: #d32f2f;
   color: white;
   padding: 0.8rem 1.6rem;
   cursor: pointer;
@@ -84,7 +84,7 @@ button {
 }
 
 button:hover {
-  background-color: #005fa3;
+  background-color: #b71c1c;
 }
 
 ul {
