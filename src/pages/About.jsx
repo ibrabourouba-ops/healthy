@@ -15,7 +15,7 @@ const About = () => {
       <Team />
       <FixedBg
         cName="fixed__secondary"
-        text="Welcome To FitnessGym…"
+        text="Hydra Gym"
         title="… Your ultimate partner for achieving fitness goals"
       />
       <Message />
